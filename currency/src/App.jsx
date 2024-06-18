@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { InputBox } from './components';
-import { useCurrencyInfo } from './hooks/useCurrency';
+import { InputBox } from './components'; // Ensure correct path
+import useCurrencyInfo from './hooks/useCurrencyInfo'; // Ensure correct path
 import './App.css';
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
     const [convertedAmount, setConvertedAmount] = useState(0);
 
     const currencyInfo = useCurrencyInfo(from);
-    const options = Object.keys(currencyInfo);
+    const options = currencyInfo ? Object.keys(currencyInfo) : [];
 
     const swap = () => {
         const currentFrom = from;
@@ -25,14 +25,18 @@ function App() {
     };
 
     const convert = () => {
-        setConvertedAmount(amount * currencyInfo[to]);
+        if (currencyInfo && currencyInfo[to]) {
+            setConvertedAmount(amount * currencyInfo[to]);
+        } else {
+            console.error(`Currency information for ${to} not found`);
+        }
     };
 
     return (
         <div
             className="w-full h-screen flex flex-wrap justify-center items-center bg-cover bg-no-repeat"
             style={{
-                backgroundImage: `url('https://static.vecteezy.com/system/resources/previews/006/852/804/original/abstract-blue-background-simple-design-for-your-website-free-vector.jpg')`,
+                backgroundImage: `url('https://img.freepik.com/free-vector/gradient-black-background-with-cubes_23-2149138432.jpg')`,
             }}
         >
             <div className="w-full">
@@ -49,6 +53,7 @@ function App() {
                                 amount={amount}
                                 currencyOptions={options}
                                 onCurrencyChange={(currency) => setFrom(currency)}
+                                onAmountChange={(amt) => setAmount(amt)}
                                 selectCurrency={from}
                             />
                         </div>
