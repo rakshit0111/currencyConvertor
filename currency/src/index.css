@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.font-roboto {
+    font-family: 'Roboto', sans-serif;
+  }
